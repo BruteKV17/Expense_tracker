@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Settings | Expense Tracker Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <section class="settings-grid">
+        <div class="panel-card">
+            <div class="panel-head">
+                <div>
+                    <h3>Budget Planner</h3>
+                    <p>Define and update your monthly budget.</p>
+                </div>
+            </div>
+
+            <form action="{{ url_for('budget') }}" method="POST" class="expense-form-grid">
+                <div class="form-group-modern full-span">
+                    <label>Monthly Budget</label>
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-wallet2"></i>
+                        <input type="number" step="0.01" min="0" name="monthly_budget" class="form-control modern-input" value="{{ current_user.monthly_budget or '' }}" placeholder="Enter monthly budget">
+                    </div>
+                </div>
+                <div class="full-span">
+                    <button type="submit" class="btn premium-btn">
+                        <span>Save Budget</span>
+                        <i class="bi bi-check2-circle"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-head">
+                <div>
+                    <h3>Theme Preferences</h3>
+                    <p>Choose your dashboard appearance.</p>
+                </div>
+            </div>
+
+            <form method="POST" class="theme-form">
+                <div class="theme-choice-grid">
+                    <label class="theme-choice">
+                        <input type="radio" name="theme" value="light" {% if current_user.theme == 'light' %}checked{% endif %}>
+                        <span><i class="bi bi-sun-fill"></i> Light Mode</span>
+                    </label>
+
+                    <label class="theme-choice">
+                        <input type="radio" name="theme" value="dark" {% if current_user.theme == 'dark' %}checked{% endif %}>
+                        <span><i class="bi bi-moon-stars-fill"></i> Dark Mode</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-surface mt-3">Save Preferences</button>
+            </form>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-head">
+                <div>
+                    <h3>Account Signals</h3>
+                    <p>Quick details for your app account.</p>
+                </div>
+            </div>
+            <div class="budget-summary-list">
+                <div class="budget-line">
+                    <span>Unread notifications</span>
+                    <strong>{{ notification_count }}</strong>
+                </div>
+                <div class="budget-line">
+                    <span>Currency</span>
+                    <strong>INR (₹)</strong>
+                </div>
+                <div class="budget-line">
+                    <span>Exports</span>
+                    <strong>CSV / Print PDF</strong>
+                </div>
+                <div class="budget-line">
+                    <span>Charts engine</span>
+                    <strong>Chart.js</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
