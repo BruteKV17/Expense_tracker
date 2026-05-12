@@ -42,7 +42,7 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
+# 'cascade' ensures that if a user is deleted, all their expenses and notifications are removed too
 
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -90,7 +90,7 @@ def create_notification(user_id, message):
     db.session.add(notification)
     db.session.commit()
 
-
+# Filter expenses specifically for the current month and year to calculate monthly budget progress
 def get_dashboard_data(user):
     today = date.today()
     current_month = today.month
@@ -102,7 +102,7 @@ def get_dashboard_data(user):
         extract("month", Expense.expense_date) == current_month,
         extract("year", Expense.expense_date) == current_year
     ).all()
-
+# Perform a group-by query to get total spending per category for the Pie Chart
     total_expense = sum(exp.amount for exp in all_expenses)
     monthly_expense = sum(exp.amount for exp in month_expenses)
     total_transactions = len(all_expenses)
@@ -153,7 +153,7 @@ def build_chart_data(user):
         Expense.user_id == user.id,
         extract("year", Expense.expense_date) == current_year
     ).group_by("month").order_by("month").all()
-
+# Convert query results into a dictionary (1-12) to ensure even months with 0 spending appear on the chart
     weekly_data = db.session.query(
         func.strftime("%W", Expense.expense_date),
         func.sum(Expense.amount)
@@ -194,7 +194,7 @@ def build_chart_data(user):
 def generate_ai_insights(user):
     current_month = date.today().month
     current_year = date.today().year
-
+# Threshold-based insights: Alerts the user if they've crossed 80% or 100% of their set budget
     expenses = Expense.query.filter_by(user_id=user.id).all()
     monthly_expenses = Expense.query.filter(
         Expense.user_id == user.id,
@@ -235,7 +235,7 @@ def generate_ai_insights(user):
             insights.append("Your spending is within budget. Maintain this pace to finish the month safely.")
 
     return insights[:4]
-
+# Check if the credentials already exist to prevent duplicate integrity errors in the database
 
 @app.route("/")
 def home():
