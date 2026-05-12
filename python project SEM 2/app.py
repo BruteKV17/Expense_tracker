@@ -1,10 +1,16 @@
 # Importing required Flask modules for web app functionality
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, make_response
+# SQLAlchemy for database ORM (Object Relational Mapping)
 from flask_sqlalchemy import SQLAlchemy
+# Flask-Login for user session management (login/logout)
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+# Werkzeug for password hashing (security)
 from werkzeug.security import generate_password_hash, check_password_hash
+# Date and time utilities
 from datetime import datetime, date
+# SQLAlchemy functions for queries (aggregation, filtering by date)
 from sqlalchemy import extract, func
+# CSV handling for import/export features
 import csv
 import io
 
