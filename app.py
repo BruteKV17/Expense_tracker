@@ -25,6 +25,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
     monthly_budget = db.Column(db.Float, default=0.0)
+    # UI theme preference (light/dark)
     theme = db.Column(db.String(20), default="dark")
 
     expenses = db.relationship("Expense", backref="user", lazy=True, cascade="all, delete-orphan")
