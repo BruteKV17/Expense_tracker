@@ -12,6 +12,7 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="{% if request.endpoint in ['login', 'register'] %}auth-body{% else %}app-body{% endif %}">
+    
 
     {% if current_user.is_authenticated %}
     <div class="dashboard-shell">
